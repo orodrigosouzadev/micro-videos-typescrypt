@@ -1,12 +1,13 @@
-import { Category } from "./category";
-import { omit } from "lodash";
+import { Category } from './category';
+import { omit } from 'lodash';
+import { UniqueEntityId } from '../../../@seedwork/domain/unique-entity-id.vo';
 
-describe("Category Unit Tests", () => {
-  test("constructor of category ", () => {
-    let category = new Category({ name: "Movie" });
-    let props = omit(category.props, "created_at");
+describe('Category Unit Tests', () => {
+  test('constructor of category ', () => {
+    let category = new Category({ name: 'Movie' });
+    let props = omit(category.props, 'created_at');
     expect(props).toStrictEqual({
-      name: "Movie",
+      name: 'Movie',
       description: null,
       is_active: true,
     });
@@ -14,45 +15,65 @@ describe("Category Unit Tests", () => {
 
     let created_at = new Date();
     category = new Category({
-      name: "Movie",
-      description: "some description",
+      name: 'Movie',
+      description: 'some description',
       is_active: false,
       created_at,
     });
     expect(category.props).toStrictEqual({
-      name: "Movie",
+      name: 'Movie',
       description: 'some description',
       is_active: false,
       created_at
     });
 
     category = new Category({
-      name: "Movie",
-      description: "other description",
+      name: 'Movie',
+      description: 'other description',
     });
     expect(category.props).toMatchObject({
-      name: "Movie",
+      name: 'Movie',
       description: 'other description',
     });
 
     category = new Category({
-      name: "Movie",
+      name: 'Movie',
       is_active: true,
     });
     expect(category.props).toMatchObject({
-      name: "Movie",
+      name: 'Movie',
       is_active: true,
     });
 
     created_at = new Date();
     category = new Category({
-      name: "Movie",
+      name: 'Movie',
       created_at,
     });
     expect(category.props).toMatchObject({
-      name: "Movie",
+      name: 'Movie',
       created_at,
     });
+  });
+
+  test('id prop', () => {
+    let category = new Category({ name: 'Movie' });
+    expect(category.id).not.toBeNull();
+    expect(category.id).toBeInstanceOf(UniqueEntityId);
+
+    category = new Category({ name: 'Movie' }, null);
+    expect(category.id).not.toBeNull();
+    expect(category.id).toBeInstanceOf(UniqueEntityId);
+
+
+    category = new Category({ name: 'Movie' }, undefined);
+    expect(category.id).not.toBeNull();
+    expect(category.id).toBeInstanceOf(UniqueEntityId);
+
+
+    category = new Category({ name: 'Movie' }, new UniqueEntityId());
+    expect(category.id).not.toBeNull();
+    expect(category.id).toBeInstanceOf(UniqueEntityId);
   });
 
   test('getter of name prop', () => {
