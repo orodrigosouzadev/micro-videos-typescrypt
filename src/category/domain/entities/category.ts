@@ -39,4 +39,12 @@ export class Category extends Entity<CategoryProps> {
   get created_at() {
     return this.props.created_at;
   }
+
+  activate() {
+    this.is_active = true;
+  }
+
+  deactivate() {
+    this.is_active = false;
+  }
 }
